@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: webservers
   become: yes
   remote_user: ec2-user
   become_user: root
@@ -21,7 +21,7 @@
 
   - name: Install java
     yum:
-      name: java-11-openjdk-devel
+      name: java-11-openjdk
       state: present
 
   - name: Install jenkins
