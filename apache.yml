@@ -21,7 +21,7 @@
 
   - name: Install java
     yum:
-      name: java-11-openjdk
+      name: java
       state: present
 
   - name: Install jenkins
