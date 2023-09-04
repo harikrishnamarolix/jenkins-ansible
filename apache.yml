@@ -1,18 +1,29 @@
 ---
-- hosts: webservers 
-  become: True
+- name: Install Jenkins on Amazon Linux
+  hosts: all
+  connection: ssh
+  become: yes
+
   tasks:
-    - name: Install packages
+    - name: Install Java OpenJDK
       yum:
-        name: "httpd"
-        state: "present"
-    - name: Start Apache server
-      service:
-        name: httpd
-        state: started
-        enabled: True
-    - name: Deploy static website
-      copy:
-        src: index.html
-        dest: /var/www/html/
-...
+        name: java
+        state: present
+
+    - name: Add Jenkins repository
+      yum_repository:
+        name: jenkins
+        baseurl: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        gpgcheck: yes
+        gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+        enabled: yes
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: present
+
+    - name: Start Jenkins service
+      systemd:
+        name: jenkins
+        enabled: yes
